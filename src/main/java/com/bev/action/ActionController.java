@@ -11,7 +11,7 @@ import java.util.Map;
 @RequestMapping("/ifttt/v1/actions")
 public class ActionController {
 
-    @GetMapping("start_car")
+    @PostMapping("start_car")
     @ResponseBody
     public ResponseEntity startCar(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey) {
         if ("INVALID".equals(iftttChannelKey)) {
