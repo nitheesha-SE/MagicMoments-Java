@@ -8,9 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/ifttt/v1")
 public class StatusController {
 
-    @GetMapping("/ifttt/v1/status")
+    @GetMapping("/status")
     @ResponseBody
     public ResponseEntity status(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey) {
         if ("INVALID".equals(iftttChannelKey)) {
@@ -20,7 +21,7 @@ public class StatusController {
         }
     }
 
-    @PostMapping("/ifttt/v1/test/setup")
+    @PostMapping("/test/setup")
     @ResponseBody
     public ResponseEntity setup(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey) {
         if ("INVALID".equals(iftttChannelKey)) {
