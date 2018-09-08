@@ -43,4 +43,30 @@ public class ActionController {
         }
     }
 
+    @PostMapping("stop_car")
+    @ResponseBody
+    public ResponseEntity stopCar(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey) {
+        if ("INVALID".equals(iftttChannelKey)) {
+            Map body = new HashMap<String, Object>();
+
+            Map message = new HashMap<String, String>();
+            message.put("message", "IFTTT Channel Key is invalid.");
+
+            body.put("errors", new Map[]{message});
+
+            return new ResponseEntity(body, HttpStatus.UNAUTHORIZED);
+        } else {
+            carService.setCarStatus("OFF");
+
+            Map body = new HashMap<String, Object>();
+            Map data = new HashMap<String, String>();
+            body.put("data", new Map[]{data});
+
+            data.put("id", UUID.randomUUID().toString());
+
+
+            return new ResponseEntity(body, HttpStatus.OK);
+        }
+    }
+
 }
