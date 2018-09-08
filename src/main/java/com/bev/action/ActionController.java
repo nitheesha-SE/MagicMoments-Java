@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/ifttt/v1/actions")
@@ -17,7 +18,14 @@ public class ActionController {
         if ("INVALID".equals(iftttChannelKey)) {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         } else {
-            return new ResponseEntity(HttpStatus.OK);
+            Map body = new HashMap<String, Object>();
+            Map data = new HashMap<String, String>();
+            body.put("data", data);
+
+            data.put("id", UUID.randomUUID().toString());
+            
+
+            return new ResponseEntity(body, HttpStatus.OK);
         }
     }
 
