@@ -18,7 +18,10 @@ public class ActionController {
         if ("INVALID".equals(iftttChannelKey)) {
             Map body = new HashMap<String, Object>();
 
-            body.put("errors", new String[]{"Invalid IFTT Channel Key"});
+            Map message = new HashMap<String, String>();
+            message.put("message", "IFTTT Channel Key is invalid.");
+
+            body.put("errors", new Map[]{message});
 
             return new ResponseEntity(body, HttpStatus.UNAUTHORIZED);
         } else {
