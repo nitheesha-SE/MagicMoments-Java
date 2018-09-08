@@ -27,7 +27,7 @@ public class StatusController {
             return new ResponseEntity(HttpStatus.UNAUTHORIZED);
         } else {
             Map body = new HashMap<String, Object>();
-            body.put("body", new HashMap<>());
+            body.put("data", new HashMap<>());
             return new ResponseEntity(body, HttpStatus.OK);
         }
     }
