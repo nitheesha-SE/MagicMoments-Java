@@ -16,7 +16,11 @@ public class ActionController {
     @ResponseBody
     public ResponseEntity startCar(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey) {
         if ("INVALID".equals(iftttChannelKey)) {
-            return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+            Map body = new HashMap<String, Object>();
+
+            body.put("errors", new String[]{"Invalid IFTT Channel Key"});
+
+            return new ResponseEntity(body, HttpStatus.UNAUTHORIZED);
         } else {
             Map body = new HashMap<String, Object>();
             Map data = new HashMap<String, String>();
