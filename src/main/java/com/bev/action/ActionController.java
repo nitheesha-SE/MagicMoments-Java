@@ -20,10 +20,10 @@ public class ActionController {
         } else {
             Map body = new HashMap<String, Object>();
             Map data = new HashMap<String, String>();
-            body.put("data", data);
+            body.put("data", new Map[]{data});
 
             data.put("id", UUID.randomUUID().toString());
-            
+
 
             return new ResponseEntity(body, HttpStatus.OK);
         }
