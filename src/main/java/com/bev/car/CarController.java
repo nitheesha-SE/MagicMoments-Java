@@ -25,7 +25,7 @@ public class CarController {
         Map data = new HashMap<String, String>();
         body.put("data", new Map[]{data});
 
-        data.put("status", carService.getCarStatus());
+        data.put("car", carService.getCar());
 
         return new ResponseEntity(body, HttpStatus.OK);
     }
