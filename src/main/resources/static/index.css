@@ -43,8 +43,8 @@ div.footer {
 
 #showcase {
     pointer-events: none;
-    -webkit-animation: drive 10000ms linear infinite;
-    animation: drive 10000ms linear infinite;
+    -webkit-animation: drive 50000ms linear infinite;
+    animation: drive 50000ms linear infinite;
 }
 #showcase .shadow {
     width: 120px;
