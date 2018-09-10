@@ -23,14 +23,12 @@ div {
 
 img.footer {
     background: transparent;
-    height: 50px;
+    height: 30px;
 }
 
 div.footer {
     background: transparent;
     position: relative;
-    /*width: 100%;*/
-    /*margin-left: 480px;*/
 }
 
 .window, .glass {
