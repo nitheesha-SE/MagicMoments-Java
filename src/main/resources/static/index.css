@@ -21,6 +21,18 @@ div {
     will-change: transform;
 }
 
+img.footer {
+    background: transparent;
+    height: 50px;
+}
+
+div.footer {
+    background: transparent;
+    position: static;
+    width: 100%;
+    margin-left: 480px;
+}
+
 .window, .glass {
     background: rgba(0, 70, 150, 0.6);
 }
