@@ -1,18 +1,36 @@
 package com.bev.car;
 
+import com.bev.trigger.model.CarStartedEvent;
 import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CarService {
 
-    private Car car = new Car();
+    final private Car car = new Car();
+    final private List<CarStartedEvent> carStaredEvents = new ArrayList<CarStartedEvent>();
 
     public Car getCar() {
         return car;
     }
 
-    public void setRunning(boolean running){
+    public List<CarStartedEvent> getCarStaredEvents() {
+        return carStaredEvents;
+    }
+
+    public void setRunning(boolean running) {
         this.car.setRunning(running);
+        if (running) {
+            //add car started event
+            CarStartedEvent event = new CarStartedEvent(UUID.randomUUID().toString(),
+                    Instant.now());
+
+            carStaredEvents.add(event);
+        }
     }
 
     public void setOpenBonnet(boolean openBonnet) {
