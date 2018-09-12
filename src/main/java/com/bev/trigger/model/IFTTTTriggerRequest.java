@@ -21,7 +21,7 @@ public class IFTTTTriggerRequest {
 
     private String trigger_identity;
     private Map triggerFields;
-    private int limit;
+    private Integer limit;
     private Map user;
     private Map ifttt_source;
 
@@ -41,11 +41,11 @@ public class IFTTTTriggerRequest {
         this.triggerFields = triggerFields;
     }
 
-    public int getLimit() {
+    public Integer getLimit() {
         return limit;
     }
 
-    public void setLimit(int limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
     }
 

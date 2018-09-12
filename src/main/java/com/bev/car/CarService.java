@@ -19,9 +19,17 @@ public class CarService {
         return car;
     }
 
-    public List<CarStartedEvent> getCarStaredEvents(int limit) {
+    public List<CarStartedEvent> getCarStaredEvents(Integer limit) {
         Collections.sort(carStaredEvents, Collections.reverseOrder());
-        return carStaredEvents.subList(0, limit > carStaredEvents.size() ? carStaredEvents.size() : limit);
+
+        final List<CarStartedEvent> response;
+        if(null != limit) {
+            response = carStaredEvents.subList(0, limit > carStaredEvents.size() ? carStaredEvents.size() : limit);
+        } else {
+            response = carStaredEvents;
+        }
+
+        return response;
     }
 
     public void setRunning(boolean running) {
