@@ -1,6 +1,7 @@
 package com.bev.trigger;
 
 import com.bev.car.CarService;
+import com.bev.trigger.model.IFTTTTriggerRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,13 @@ public class TriggerController {
 
     @PostMapping("car_started")
     @ResponseBody
-    public ResponseEntity carStarted(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey) {
+    public ResponseEntity carStarted(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey,
+                                     @RequestBody IFTTTTriggerRequest triggerRequest) {
         if ("INVALID".equals(iftttChannelKey)) {
             return generateErrorResponse();
         } else {
             Map<String, Object> response = new HashMap<>();
-            response.put("data", carService.getCarStaredEvents());
+            response.put("data", carService.getCarStaredEvents(triggerRequest.getLimit()));
 
             return new ResponseEntity(response, HttpStatus.OK);
         }

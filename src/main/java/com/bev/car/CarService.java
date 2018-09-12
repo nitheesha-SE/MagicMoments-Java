@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +19,8 @@ public class CarService {
         return car;
     }
 
-    public List<CarStartedEvent> getCarStaredEvents() {
+    public List<CarStartedEvent> getCarStaredEvents(int limit) {
+        Collections.sort(carStaredEvents, Collections.reverseOrder());
         return carStaredEvents;
     }
 

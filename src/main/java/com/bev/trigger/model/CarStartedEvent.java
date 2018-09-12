@@ -4,7 +4,7 @@ import java.time.Instant;
 
 public class CarStartedEvent extends TriggerEvent {
 
-    public CarStartedEvent(String id, Instant timestamp) {
-        super(id, timestamp);
+    public CarStartedEvent(String id, Instant createdAt) {
+        super(id, createdAt);
     }
 }
