@@ -21,7 +21,7 @@ public class CarService {
 
     public List<CarStartedEvent> getCarStaredEvents(int limit) {
         Collections.sort(carStaredEvents, Collections.reverseOrder());
-        return carStaredEvents;
+        return carStaredEvents.subList(0, limit);
     }
 
     public void setRunning(boolean running) {
