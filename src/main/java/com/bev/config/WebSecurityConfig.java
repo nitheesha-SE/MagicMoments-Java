@@ -31,9 +31,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .and()
                 .httpBasic();
-//
-//        http.addFilterAfter(new CustomFilter(),
-//                BasicAuthenticationFilter.class);
     }
 
     @Bean

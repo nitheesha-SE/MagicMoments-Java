@@ -51,7 +51,7 @@ public class Application {
         //Initialize AI TelemetryConfiguration via Spring Beans
         @Bean
         public String telemetryConfig() {
-            String telemetryKey = System.getenv("APPLICATION_INSIGHTS_IKEY");
+            String telemetryKey = "5ffa55ca-1a86-42e1-b35c-2a54581f2d2e";
             if (telemetryKey != null) {
                 TelemetryConfiguration.getActive().setInstrumentationKey(telemetryKey);
             }
