@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-mvn clean package
+mvn clean package -DskipTests
 cp target/gs-spring-boot-0.1.0.jar .
 git add -A
 git commit -m "new deploy"
