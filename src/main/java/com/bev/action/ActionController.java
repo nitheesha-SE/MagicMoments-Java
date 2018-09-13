@@ -1,5 +1,6 @@
 package com.bev.action;
 
+import com.bev.action.model.IFTTTActionRequest;
 import com.bev.car.CarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,7 +19,7 @@ public class ActionController {
     private CarService carService;
     final private Map standardBodyResponse = new HashMap<String, String>();
 
-    public ActionController(){
+    public ActionController() {
         Map data = new HashMap<String, String>();
         data.put("id", UUID.randomUUID().toString());
 
@@ -27,22 +28,30 @@ public class ActionController {
 
     @PostMapping("start_car")
     @ResponseBody
-    public ResponseEntity startCar(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey) {
+    public ResponseEntity startCar(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey,
+                                   @RequestBody IFTTTActionRequest request) {
         if ("INVALID".equals(iftttChannelKey)) {
             return generateErrorResponse();
         } else {
-            carService.setRunning(true);
+            if (null != request.getIfttt_source() &&
+                    null != request.getIfttt_source().getId()) {
+                carService.setRunning(request.getIfttt_source().getId(), true);
+            }
             return new ResponseEntity(standardBodyResponse, HttpStatus.OK);
         }
     }
 
     @PostMapping("stop_car")
     @ResponseBody
-    public ResponseEntity stopCar(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey) {
+    public ResponseEntity stopCar(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey,
+                                  @RequestBody IFTTTActionRequest request) {
         if ("INVALID".equals(iftttChannelKey)) {
             return generateErrorResponse();
         } else {
-            carService.setRunning(false);
+            if (null != request.getIfttt_source() &&
+                    null != request.getIfttt_source().getId()) {
+                carService.setRunning(request.getIfttt_source().getId(), false);
+            }
             return new ResponseEntity(standardBodyResponse, HttpStatus.OK);
         }
     }
@@ -181,8 +190,6 @@ public class ActionController {
             return new ResponseEntity(standardBodyResponse, HttpStatus.OK);
         }
     }
-
-
 
 
     private ResponseEntity generateErrorResponse() {

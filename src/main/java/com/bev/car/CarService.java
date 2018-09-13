@@ -1,6 +1,8 @@
 package com.bev.car;
 
+import com.bev.notifications.IFTTTNotificationsService;
 import com.bev.trigger.model.CarStartedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -11,6 +13,9 @@ import java.util.UUID;
 
 @Service
 public class CarService {
+
+    @Autowired
+    private IFTTTNotificationsService iftttNotificationsService;
 
     final private Car car = new Car();
     final private List<CarStartedEvent> carStaredEvents = new ArrayList<CarStartedEvent>();
@@ -32,7 +37,7 @@ public class CarService {
         return response;
     }
 
-    public void setRunning(boolean running) {
+    public void setRunning(String userId, boolean running) {
         this.car.setRunning(running);
         if (running) {
             //add car started event
@@ -40,6 +45,8 @@ public class CarService {
                     Instant.now());
 
             carStaredEvents.add(event);
+
+            iftttNotificationsService.sendUserIdNotification(userId);
         }
     }
 
