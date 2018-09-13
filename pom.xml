@@ -31,6 +31,12 @@
             <scope>test</scope>
         </dependency>
         <!-- end::tests[] -->
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>applicationinsights-web</artifactId>
+            <!-- or applicationinsights-core for bare API -->
+            <version>[2.0,)</version>
+        </dependency>
     </dependencies>
 
     <properties>
