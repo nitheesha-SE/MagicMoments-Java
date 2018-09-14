@@ -16,6 +16,7 @@ import java.util.UUID;
 @Service
 public class IFTTTNotificationsService {
 
+    public static final String SERVICE_KEY = "iUhrtsNrt43se-OmtsKDgF2wJOF0mdMua-dhc6yIllvvayvHAKT4qBPMQyYI9ilt";
     private Logger log = LoggerFactory.getLogger(IFTTTNotificationsService.class);
 
     private final static String SERVICE_URL = "https://realtime.ifttt.com/v1/notifications";
@@ -27,7 +28,7 @@ public class IFTTTNotificationsService {
         NotificationRequest bean = new NotificationRequest(userId);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("IFTTT-Service-Key", "iUhrtsNrt43se-OmtsKDgF2wJOF0mdMua-dhc6yIllvvayvHAKT4qBPMQyYI9ilt");
+        headers.set("IFTTT-Service-Key", SERVICE_KEY);
         headers.set("X-Request-ID", UUID.randomUUID().toString());
 
         HttpEntity<NotificationRequest> request = new HttpEntity<>(bean, headers);
