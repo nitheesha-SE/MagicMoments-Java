@@ -57,4 +57,17 @@ public class TriggerController {
         }
     }
 
+    @PostMapping("battery_level_event")
+    @ResponseBody
+    public ResponseEntity batteryLevelEvent(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey,
+                                    @RequestBody IFTTTTriggerRequest triggerRequest) {
+        if ("INVALID".equals(iftttChannelKey)) {
+            return controllerUtil.generateErrorResponse();
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("data", carService.getBatteryLevelEvents(triggerRequest.getLimit()));
+
+            return new ResponseEntity(response, HttpStatus.OK);
+        }
+    }
 }

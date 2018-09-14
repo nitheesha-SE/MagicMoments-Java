@@ -16,8 +16,8 @@ import java.util.UUID;
 @Service
 public class IFTTTNotificationsService {
 
-    public static final String SERVICE_KEY = "iUhrtsNrt43se-OmtsKDgF2wJOF0mdMua-dhc6yIllvvayvHAKT4qBPMQyYI9ilt";
-    private Logger log = LoggerFactory.getLogger(IFTTTNotificationsService.class);
+    private static final String SERVICE_KEY = "iUhrtsNrt43se-OmtsKDgF2wJOF0mdMua-dhc6yIllvvayvHAKT4qBPMQyYI9ilt";
+    private static final Logger log = LoggerFactory.getLogger(IFTTTNotificationsService.class);
 
     private final static String SERVICE_URL = "https://realtime.ifttt.com/v1/notifications";
 

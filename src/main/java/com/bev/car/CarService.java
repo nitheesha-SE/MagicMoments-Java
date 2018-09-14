@@ -1,19 +1,23 @@
 package com.bev.car;
 
 import com.bev.notifications.IFTTTNotificationsService;
+import com.bev.trigger.model.BatteryLevelEvent;
 import com.bev.trigger.model.CarStartedEvent;
 import com.bev.trigger.model.DoorEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CarService {
+
+    private static final Logger log = LoggerFactory.getLogger(IFTTTNotificationsService.class);
+
 
     @Autowired
     private IFTTTNotificationsService iftttNotificationsService;
@@ -21,6 +25,21 @@ public class CarService {
     final private Car car = new Car();
     final private List<CarStartedEvent> carStaredEvents = new ArrayList<CarStartedEvent>();
     final private List<DoorEvent> doorEvents = new ArrayList<>();
+    final private List<BatteryLevelEvent> batteryLevelEvents = new ArrayList<>();
+
+    @PostConstruct
+    public void init() {
+        log.info("Adding sample battery level events.");
+
+        try {
+            for (Integer batteryLevel : Arrays.asList(0, 50, 100)) {
+                this.addBatteryLevelEvent(Optional.of(batteryLevel));
+                Thread.sleep(100);
+            }
+        } catch (InterruptedException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
 
     public Car getCar() {
         return car;
@@ -30,7 +49,7 @@ public class CarService {
         Collections.sort(this.carStaredEvents, Collections.reverseOrder());
 
         final List<CarStartedEvent> response;
-        if(null != limit) {
+        if (null != limit) {
             response = this.carStaredEvents
                     .subList(0, limit > this.carStaredEvents.size() ? this.carStaredEvents.size() : limit);
         } else {
@@ -44,7 +63,7 @@ public class CarService {
         Collections.sort(this.doorEvents, Collections.reverseOrder());
 
         final List<DoorEvent> response;
-        if(null != limit) {
+        if (null != limit) {
             response = this.doorEvents
                     .subList(0, limit > this.doorEvents.size() ? this.doorEvents.size() : limit);
         } else {
@@ -52,6 +71,30 @@ public class CarService {
         }
 
         return response;
+    }
+
+
+    public List<BatteryLevelEvent> getBatteryLevelEvents(Integer limit) {
+        Collections.sort(this.batteryLevelEvents, Collections.reverseOrder());
+
+        final List<BatteryLevelEvent> response;
+        if (null != limit) {
+            response = this.batteryLevelEvents
+                    .subList(0, limit > this.batteryLevelEvents.size() ? this.batteryLevelEvents.size() : limit);
+        } else {
+            response = this.batteryLevelEvents;
+        }
+
+        return response;
+    }
+
+    public void addBatteryLevelEvent(Optional<Integer> batteryLevel) {
+        if (batteryLevel.isPresent()) {
+            this.batteryLevelEvents.add(new BatteryLevelEvent(UUID.randomUUID().toString(),
+                    Instant.now(), batteryLevel.get()));
+
+            //TODO Look into doing an IFTTT realtime notification.
+        }
     }
 
     public void setRunning(String userId, boolean running) {
