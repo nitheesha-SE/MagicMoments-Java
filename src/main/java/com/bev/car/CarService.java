@@ -2,6 +2,7 @@ package com.bev.car;
 
 import com.bev.notifications.IFTTTNotificationsService;
 import com.bev.trigger.model.CarStartedEvent;
+import com.bev.trigger.model.DoorEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,19 +20,35 @@ public class CarService {
 
     final private Car car = new Car();
     final private List<CarStartedEvent> carStaredEvents = new ArrayList<CarStartedEvent>();
+    final private List<DoorEvent> doorEvents = new ArrayList<>();
 
     public Car getCar() {
         return car;
     }
 
     public List<CarStartedEvent> getCarStaredEvents(Integer limit) {
-        Collections.sort(carStaredEvents, Collections.reverseOrder());
+        Collections.sort(this.carStaredEvents, Collections.reverseOrder());
 
         final List<CarStartedEvent> response;
         if(null != limit) {
-            response = carStaredEvents.subList(0, limit > carStaredEvents.size() ? carStaredEvents.size() : limit);
+            response = this.carStaredEvents
+                    .subList(0, limit > this.carStaredEvents.size() ? this.carStaredEvents.size() : limit);
         } else {
-            response = carStaredEvents;
+            response = this.carStaredEvents;
+        }
+
+        return response;
+    }
+
+    public List<DoorEvent> getDoorEvents(Integer limit) {
+        Collections.sort(this.doorEvents, Collections.reverseOrder());
+
+        final List<DoorEvent> response;
+        if(null != limit) {
+            response = this.doorEvents
+                    .subList(0, limit > this.doorEvents.size() ? this.doorEvents.size() : limit);
+        } else {
+            response = this.doorEvents;
         }
 
         return response;
@@ -58,8 +75,15 @@ public class CarService {
         this.car.setOpenTrunk(openTrunk);
     }
 
-    public void setOpenDoor(boolean openDoor) {
+    public void setOpenDoor(String userId, boolean openDoor) {
         this.car.setOpenDoor(openDoor);
+        //add door event
+        DoorEvent event = new DoorEvent(UUID.randomUUID().toString(),
+                Instant.now());
+
+        doorEvents.add(event);
+
+        iftttNotificationsService.sendUserIdNotification(userId);
     }
 
     public void setOpenTop(boolean openTop) {

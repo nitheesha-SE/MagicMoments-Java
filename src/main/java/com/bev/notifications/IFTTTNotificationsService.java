@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.UUID;
+
 
 @Service
 public class IFTTTNotificationsService {
@@ -26,6 +28,7 @@ public class IFTTTNotificationsService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("IFTTT-Service-Key", "iUhrtsNrt43se-OmtsKDgF2wJOF0mdMua-dhc6yIllvvayvHAKT4qBPMQyYI9ilt");
+        headers.set("X-Request-ID", UUID.randomUUID().toString());
 
         HttpEntity<NotificationRequest> request = new HttpEntity<>(bean, headers);
 

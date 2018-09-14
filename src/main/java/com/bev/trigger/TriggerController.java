@@ -1,6 +1,7 @@
 package com.bev.trigger;
 
 import com.bev.car.CarService;
+import com.bev.common.ControllerUtil;
 import com.bev.trigger.model.IFTTTTriggerRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,8 @@ public class TriggerController {
 
     @Autowired
     private CarService carService;
+    @Autowired
+    private ControllerUtil controllerUtil;
     final private Map standardBodyResponse = new HashMap<String, String>();
 
     public TriggerController() {
@@ -31,7 +34,7 @@ public class TriggerController {
     public ResponseEntity carStarted(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey,
                                      @RequestBody IFTTTTriggerRequest triggerRequest) {
         if ("INVALID".equals(iftttChannelKey)) {
-            return generateErrorResponse();
+            return controllerUtil.generateErrorResponse();
         } else {
             Map<String, Object> response = new HashMap<>();
             response.put("data", carService.getCarStaredEvents(triggerRequest.getLimit()));
@@ -40,15 +43,18 @@ public class TriggerController {
         }
     }
 
-    private ResponseEntity generateErrorResponse() {
-        Map body = new HashMap<String, Object>();
+    @PostMapping("door_event")
+    @ResponseBody
+    public ResponseEntity doorEvent(@RequestHeader("IFTTT-Channel-Key") String iftttChannelKey,
+                                     @RequestBody IFTTTTriggerRequest triggerRequest) {
+        if ("INVALID".equals(iftttChannelKey)) {
+            return controllerUtil.generateErrorResponse();
+        } else {
+            Map<String, Object> response = new HashMap<>();
+            response.put("data", carService.getDoorEvents(triggerRequest.getLimit()));
 
-        Map message = new HashMap<String, String>();
-        message.put("message", "IFTTT Channel Key is invalid.");
-
-        body.put("errors", new Map[]{message});
-
-        return new ResponseEntity(body, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity(response, HttpStatus.OK);
+        }
     }
 
 }
