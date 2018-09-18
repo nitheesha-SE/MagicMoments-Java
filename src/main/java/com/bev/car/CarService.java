@@ -41,10 +41,21 @@ public class CarService {
         }
     }
 
+    /**
+     * Returns the car object and it's current properties.
+     * @return
+     */
     public Car getCar() {
+        log.debug(car.toString());
+
         return car;
     }
 
+    /**
+     * Returns the list of Car Started events.
+     * @param limit
+     * @return
+     */
     public List<CarStartedEvent> getCarStaredEvents(Integer limit) {
         Collections.sort(this.carStaredEvents, Collections.reverseOrder());
 
@@ -59,6 +70,11 @@ public class CarService {
         return response;
     }
 
+    /**
+     * Returns the list of door open and close events.
+     * @param limit
+     * @return
+     */
     public List<DoorEvent> getDoorEvents(Integer limit) {
         Collections.sort(this.doorEvents, Collections.reverseOrder());
 
@@ -74,6 +90,11 @@ public class CarService {
     }
 
 
+    /**
+     * Returns the list of events that correspond to changes in the battery charge level fluctuations.
+     * @param limit
+     * @return
+     */
     public List<BatteryLevelEvent> getBatteryLevelEvents(Integer limit) {
         Collections.sort(this.batteryLevelEvents, Collections.reverseOrder());
 
@@ -88,6 +109,10 @@ public class CarService {
         return response;
     }
 
+    /**
+     * Add an event that corresponds with a change in the battery charge level.
+     * @param batteryLevel
+     */
     public void addBatteryLevelEvent(Optional<Integer> batteryLevel) {
         if (batteryLevel.isPresent()) {
             this.batteryLevelEvents.add(new BatteryLevelEvent(UUID.randomUUID().toString(),
@@ -97,6 +122,11 @@ public class CarService {
         }
     }
 
+    /**
+     * Sets the car's running status.
+     * @param userId
+     * @param running
+     */
     public void setRunning(String userId, boolean running) {
         this.car.setRunning(running);
         if (running) {

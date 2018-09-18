@@ -1,5 +1,8 @@
 package com.bev.car;
 
+import com.bev.notifications.IFTTTNotificationsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +18,9 @@ import java.util.Map;
 @RequestMapping("/car")
 public class CarController {
 
+    private static final Logger log = LoggerFactory.getLogger(CarController.class);
+
+
     @Autowired
     private CarService carService;
 
@@ -25,7 +31,8 @@ public class CarController {
         Map data = new HashMap<String, String>();
         body.put("data", new Map[]{data});
 
-        data.put("car", carService.getCar());
+        Car car = carService.getCar();
+        data.put("car", car);
 
         return new ResponseEntity(body, HttpStatus.OK);
     }

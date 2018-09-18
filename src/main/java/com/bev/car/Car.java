@@ -9,6 +9,15 @@ public class Car {
     private boolean openTop = false;
     private boolean lightsOn = false;
     private boolean openWindow = false;
+    private int batteryLevel = 100;
+
+    public int getBatteryLevel() {
+        return batteryLevel;
+    }
+
+    public void setBatteryLevel(int batteryLevel) {
+        this.batteryLevel = batteryLevel;
+    }
 
     public boolean isRunning() {
         return running;
@@ -64,5 +73,19 @@ public class Car {
 
     public void setOpenWindow(boolean openWindow) {
         this.openWindow = openWindow;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "running=" + running +
+                ", openBonnet=" + openBonnet +
+                ", openTrunk=" + openTrunk +
+                ", openDoor=" + openDoor +
+                ", openTop=" + openTop +
+                ", lightsOn=" + lightsOn +
+                ", openWindow=" + openWindow +
+                ", batteryLevel=" + batteryLevel +
+                '}';
     }
 }
