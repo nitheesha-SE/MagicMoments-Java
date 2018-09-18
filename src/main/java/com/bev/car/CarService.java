@@ -49,7 +49,7 @@ public class CarService {
                 this.addBatteryLevelEvent(Optional.of(Integer.valueOf(car.getBatteryLevel() + 1)));
             }
         } else {
-            if(car.getBatteryLevel() > 0) {
+            if(car.getBatteryLevel() > 0 && car.isRunning()) {
                 this.addBatteryLevelEvent(Optional.of(Integer.valueOf(car.getBatteryLevel() - 1)));
             }
         }
