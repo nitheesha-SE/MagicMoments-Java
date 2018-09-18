@@ -7,6 +7,7 @@ import com.bev.trigger.model.DoorEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -31,13 +32,26 @@ public class CarService {
     public void init() {
         log.info("Adding sample battery level events.");
 
-        try {
-            for (Integer batteryLevel : Arrays.asList(0, 50, 100)) {
-                this.addBatteryLevelEvent(Optional.of(batteryLevel));
-                Thread.sleep(100);
+//        try {
+//            for (Integer batteryLevel : Arrays.asList(0, 50, 100)) {
+//                this.addBatteryLevelEvent(Optional.of(batteryLevel));
+//                Thread.sleep(100);
+//            }
+//        } catch (InterruptedException e) {
+//            log.error(e.getMessage(), e);
+//        }
+    }
+
+    @Scheduled(fixedRate = 1000)
+    public void simulateChargeLevel(){
+        if(car.isCharging()) {
+            if(car.getBatteryLevel() <100) {
+                this.addBatteryLevelEvent(Optional.of(Integer.valueOf(car.getBatteryLevel() + 1)));
             }
-        } catch (InterruptedException e) {
-            log.error(e.getMessage(), e);
+        } else {
+            if(car.getBatteryLevel() > 0) {
+                this.addBatteryLevelEvent(Optional.of(Integer.valueOf(car.getBatteryLevel() - 1)));
+            }
         }
     }
 
@@ -170,5 +184,9 @@ public class CarService {
 
     public void setOpenWindow(boolean openWindow) {
         this.car.setOpenWindow(openWindow);
+    }
+
+    public void setCharing(boolean charging){
+        this.car.setCharging(charging);
     }
 }

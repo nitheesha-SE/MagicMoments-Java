@@ -10,6 +10,15 @@ public class Car {
     private boolean lightsOn = false;
     private boolean openWindow = false;
     private int batteryLevel = 100;
+    private boolean charging = false;
+
+    public boolean isCharging() {
+        return charging;
+    }
+
+    public void setCharging(boolean charging) {
+        this.charging = charging;
+    }
 
     public int getBatteryLevel() {
         return batteryLevel;
