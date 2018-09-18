@@ -115,6 +115,7 @@ public class CarService {
      */
     public void addBatteryLevelEvent(Optional<Integer> batteryLevel) {
         if (batteryLevel.isPresent()) {
+            this.car.setBatteryLevel(batteryLevel.get());
             this.batteryLevelEvents.add(new BatteryLevelEvent(UUID.randomUUID().toString(),
                     Instant.now(), batteryLevel.get()));
 
