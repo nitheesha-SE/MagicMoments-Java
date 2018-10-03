@@ -45,4 +45,11 @@ public class ShoppingListController {
         }
         return new ResponseEntity(Void.class, HttpStatus.OK);
     }
+
+    @PostMapping("/notifyFamily")
+    @ResponseBody
+    public ResponseEntity notifyFamily(@RequestBody Map<String, Object> request) {
+        shoppingListService.notifyFamily(Optional.ofNullable((String) request.get("message")));
+        return new ResponseEntity(Void.class, HttpStatus.OK);
+    }
 }
