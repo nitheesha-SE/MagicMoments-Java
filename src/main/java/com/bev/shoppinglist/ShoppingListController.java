@@ -1,10 +1,14 @@
 package com.bev.shoppinglist;
 
 import com.bev.shoppinglist.model.ShoppingItem;
+import com.twilio.twiml.MessagingResponse;
+import com.twilio.twiml.messaging.Body;
+import com.twilio.twiml.messaging.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,5 +55,27 @@ public class ShoppingListController {
     public ResponseEntity notifyFamily(@RequestBody Map<String, Object> request) {
         shoppingListService.notifyFamily(Optional.ofNullable((String) request.get("message")));
         return new ResponseEntity(Void.class, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/sms", method = RequestMethod.POST, produces = {MediaType.TEXT_XML_VALUE}, consumes =
+            MediaType.ALL_VALUE)
+    @ResponseBody
+    public String receiveSMSFromTwilio(@RequestBody String request) {
+        log.debug(request);
+        shoppingListService.addShoppingItem(Optional.of(new ShoppingItem(request.substring(request.indexOf("&Body")+6,
+                request.indexOf(
+                "&FromCountry")))));
+        Body body = new Body
+                .Builder("Your item has been added to the shopping list!")
+                .build();
+        Message sms = new Message
+                .Builder()
+                .body(body)
+                .build();
+        MessagingResponse twiml = new MessagingResponse
+                .Builder()
+                .message(sms)
+                .build();
+        return twiml.toXml();
     }
 }
