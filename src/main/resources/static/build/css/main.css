@@ -1,0 +1,92 @@
+.heading___1Kzt_ {
+  text-align: center;
+  font-family: 'Raleway', sans-serif;
+  font-size: 30px;
+  font-weight: 100;
+  line-height: 36px;
+  margin: 0 0 24px; }
+
+.todoListMain___1CCey .header___1J9sW input {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #fff;
+  width: 165px; }
+
+.todoListMain___1CCey .header___1J9sW button {
+  padding: 10px;
+  font-size: 16px;
+  margin: 10px;
+  margin-right: 0px;
+  background-color: #0066ff;
+  color: #fff;
+  border: 2px solid #0066ff; }
+
+.todoListMain___1CCey .header___1J9sW button:hover {
+  background-color: #003399;
+  border: 2px solid #003399;
+  cursor: pointer; }
+
+.todoListMain___1CCey .theList___IqrwA {
+  list-style: none;
+  padding-left: 0;
+  width: 250px; }
+
+.todoListMain___1CCey .theList___IqrwA li {
+  color: #333;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 10px;
+  margin-left: 5px;
+  border-radius: 0px;
+  text-align: center;
+  transition: background-color 0.2s ease-out; }
+
+.todoListMain___1CCey .theList___IqrwA li:hover {
+  background-color: black;
+  color: white;
+  cursor: pointer; }
+
+.familyShoppingListHeader___1wOTq {
+  font-family: 'Raleway', sans-serif;
+  font-size: 30px;
+  font-weight: 100;
+  line-height: 36px;
+  margin: 0 0 24px 10px;
+  text-align: center;
+  border-bottom: 1px solid black; }
+
+header {
+  grid-area: header;
+  background: whitesmoke;
+  padding: 20px; }
+
+map {
+  grid-area: content;
+  background: linear-gradient(to bottom, whitesmoke, white);
+  padding: 20px; }
+
+shopping {
+  grid-area: shopping;
+  background: linear-gradient(to bottom, whitesmoke, white); }
+
+footer {
+  padding: 20px;
+  grid-area: footer;
+  background: white; }
+
+footer img {
+  width: 80px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
+.wrapper___3QGUb {
+  border: 5px solid #000;
+  border-radius: 5px;
+  box-sizing: border-box;
+  display: grid;
+  grid-gap: 0px;
+  grid-template-columns: 3fr;
+  grid-template-areas: 'header       header' 'content      content' 'shopping     shopping' 'footer       footer'; }
+
+
+/*# sourceMappingURL=main.css.map*/
