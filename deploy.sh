@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 mvn clean package -DskipTests
-cp target/gs-spring-boot-0.1.0.jar .
+cp target/gs-spring-boot-0.1.0.war .
 git add -A
 git commit -m "new deploy"
 # Deploy to Inno Lab Aure
