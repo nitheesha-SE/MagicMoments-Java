@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#copy over shopping poc
+cp -R ../webpack-react-boilerplate/build src/main/resources/static
 mvn clean package -DskipTests
 #cp target/gs-spring-boot-0.1.0.war .
 #git add -A

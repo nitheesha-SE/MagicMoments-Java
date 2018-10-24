@@ -34,6 +34,15 @@ public class ShoppingListController {
         return new ResponseEntity(body, HttpStatus.OK);
     }
 
+    @GetMapping("/recentlyAdded")
+    @ResponseBody
+    public ResponseEntity getRecentlyAddedItems(@RequestParam(required = false) Optional<String> query) {
+        Map body = new HashMap<String, Object>();
+        body.put("data", this.shoppingListService.getRecentlyAddedItems(query));
+
+        return new ResponseEntity(body, HttpStatus.OK);
+    }
+
     @PostMapping("")
     @ResponseBody
     public ResponseEntity addShoppingItem(@RequestBody ShoppingItem shoppingItem) {

@@ -1,22 +1,29 @@
 package com.bev.shoppinglist.model;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class ShoppingItem {
 
     private String key;
     private String text;
+    private String ownerName;
     private Integer itemQuantity = 1;
 
     public ShoppingItem(String text) {
         super();
+        this.key = UUID.randomUUID().toString();
         this.text = text;
+        this.itemQuantity = 1;
+        this.ownerName = "Paul";
     }
 
-    public ShoppingItem(String key, String text, Integer itemQuantity) {
+    public ShoppingItem(String key, String text, Integer itemQuantity, String ownerName) {
+        super();
         this.key = key;
         this.text = text;
         this.itemQuantity = itemQuantity;
+        this.ownerName = ownerName;
     }
 
     public ShoppingItem() {
@@ -38,6 +45,14 @@ public class ShoppingItem {
     @Override
     public int hashCode() {
         return Objects.hash(text);
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getKey() {

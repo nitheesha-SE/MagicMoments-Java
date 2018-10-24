@@ -1,18 +1,20 @@
 package com.bev.shoppinglist;
 
 import com.bev.shoppinglist.model.ShoppingItem;
+import com.twilio.Twilio;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import com.twilio.Twilio;
-import com.twilio.rest.api.v2010.account.Message;
-import com.twilio.type.PhoneNumber;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingListService {
@@ -20,6 +22,7 @@ public class ShoppingListService {
     private static final Logger log = LoggerFactory.getLogger(ShoppingListService.class);
 
     private final Set<ShoppingItem> shoppingList = new HashSet<>();
+    private final Set<ShoppingItem> recentlyAddedItemsList = new HashSet<>();
     // Find your Account Sid and Token at twilio.com/user/account
     public static final String ACCOUNT_SID = "ACd6489b7fcf8f81ad194583ad2d22215a";
     public static final String AUTH_TOKEN = "f4788ad61988fa74d17cbf9ed247c8b6";
@@ -28,9 +31,13 @@ public class ShoppingListService {
     public void init() {
         log.info("Adding sample shopping itmems.");
 
-        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Coffee", 1));
-        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Milk", 1));
-        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Sugar", 1));
+        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Coffee", 1, "Charlie"));
+        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Milk", 1, "Charlie"));
+        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Sugar", 1, "Addison"));
+
+        this.recentlyAddedItemsList.add(new ShoppingItem(UUID.randomUUID().toString(), "Coffee", 1, "Charlie"));
+        this.recentlyAddedItemsList.add(new ShoppingItem(UUID.randomUUID().toString(), "Milk", 1, "Charlie"));
+        this.recentlyAddedItemsList.add(new ShoppingItem(UUID.randomUUID().toString(), "Sugar", 1, "Addison"));
     }
 
     /**
@@ -43,13 +50,32 @@ public class ShoppingListService {
     }
 
     /**
+     * Return recently added items.
+     *
+     * @return
+     */
+    public Set<ShoppingItem> getRecentlyAddedItems(Optional<String> query) {
+        if (query.isPresent()) {
+            return recentlyAddedItemsList.stream()
+                    .filter(line -> line.getText().contains(query.get()))
+                    .collect(Collectors.toSet());
+        } else {
+            return recentlyAddedItemsList;
+        }
+    }
+
+    /**
      * Adds an items to the shopping list.
      *
      * @param item
      */
     public void addShoppingItem(Optional<ShoppingItem> item) {
         if (item.isPresent()) {
+            if(StringUtils.isEmpty(item.get().getKey())){
+                item.get().setKey(UUID.randomUUID().toString());
+            }
             this.shoppingList.add(item.get());
+            this.recentlyAddedItemsList.add(item.get());
         }
     }
 
