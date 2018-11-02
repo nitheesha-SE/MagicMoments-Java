@@ -1,5 +1,7 @@
 package com.bev.shoppinglist.model;
 
+import com.bev.shoppinglist.model.walmart.WalmartSearchResponse;
+
 import java.util.Objects;
 import java.util.UUID;
 
@@ -9,6 +11,7 @@ public class ShoppingItem {
     private String text;
     private String ownerName;
     private Integer itemQuantity = 1;
+    private WalmartSearchResponse walmartResponse;
 
     public ShoppingItem(String text) {
         super();
@@ -77,5 +80,13 @@ public class ShoppingItem {
 
     public void setItemQuantity(Integer itemQuantity) {
         this.itemQuantity = itemQuantity;
+    }
+
+    public WalmartSearchResponse getWalmartResponse() {
+        return walmartResponse;
+    }
+
+    public void setWalmartResponse(WalmartSearchResponse walmartResponse) {
+        this.walmartResponse = walmartResponse;
     }
 }

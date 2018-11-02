@@ -1,6 +1,7 @@
 package com.bev.shoppinglist;
 
 import com.bev.shoppinglist.model.ShoppingItem;
+import com.bev.shoppinglist.model.walmart.Item;
 import com.bev.shoppinglist.model.walmart.WalmartSearchResponse;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -12,10 +13,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.PostConstruct;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,13 +33,9 @@ public class ShoppingListService {
     public void init() {
         log.info("Adding sample shopping itmems.");
 
-        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Coffee", 1, "Charlie"));
-        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Milk", 1, "Charlie"));
-        this.shoppingList.add(new ShoppingItem(UUID.randomUUID().toString(), "Sugar", 1, "Addison"));
-
-        this.recentlyAddedItemsList.add(new ShoppingItem(UUID.randomUUID().toString(), "Coffee", 1, "Charlie"));
-        this.recentlyAddedItemsList.add(new ShoppingItem(UUID.randomUUID().toString(), "Milk", 1, "Charlie"));
-        this.recentlyAddedItemsList.add(new ShoppingItem(UUID.randomUUID().toString(), "Sugar", 1, "Addison"));
+        this.addShoppingItem(Optional.of(new ShoppingItem(UUID.randomUUID().toString(), "Coffee", 1, "Charlie")));
+        this.addShoppingItem(Optional.of(new ShoppingItem(UUID.randomUUID().toString(), "Milk", 1, "Charlie")));
+        this.addShoppingItem(Optional.of(new ShoppingItem(UUID.randomUUID().toString(), "Sugar", 1, "Addison")));
     }
 
     /**
@@ -50,7 +44,7 @@ public class ShoppingListService {
      * @return
      */
     public Set<ShoppingItem> getShoppingList() {
-        return shoppingList;
+        return this.shoppingList;
     }
 
     /**
@@ -70,22 +64,29 @@ public class ShoppingListService {
 
     /**
      * Searches the walmart api to see if the items are available nearby.
+     *
      * @param query
      * @return
      */
     public WalmartSearchResponse getNearbyItems(Optional<String> query) {
         if (query.isPresent()) {
-            final String walmartAPIURL = "http://api.walmartlabs.com/v1/search?query="+query.get()+"&format=json&facet=on&facet" +
-                    ".filter=offerType%3AONLINE_AND_STORE&apiKey=kfr3z4kp7bm4g5bcqetxqrnb";
+            final String walmartAPIURL = "http://api.walmartlabs.com/v1/search?query=" + query.get() + "&format=json" +
+                    "&apiKey=kfr3z4kp7bm4g5bcqetxqrnb";
+            WalmartSearchResponse response =  restTemplate.getForObject(walmartAPIURL, WalmartSearchResponse.class);
 
-            WalmartSearchResponse response = restTemplate.getForObject(walmartAPIURL, WalmartSearchResponse.class);
+            List<Item> filteredItems = response.getItems()
+                    .stream()
+                    .filter(item ->
+                            "Available".equals(item.getStock()))
+                    .collect(Collectors.toList());
+
+            response.setItems(filteredItems);
 
             return response;
         } else {
             return new WalmartSearchResponse();
         }
     }
-
 
 
     /**
@@ -95,11 +96,13 @@ public class ShoppingListService {
      */
     public void addShoppingItem(Optional<ShoppingItem> item) {
         if (item.isPresent()) {
-            if(StringUtils.isEmpty(item.get().getKey())){
+            if (StringUtils.isEmpty(item.get().getKey())) {
                 item.get().setKey(UUID.randomUUID().toString());
             }
             this.shoppingList.add(item.get());
             this.recentlyAddedItemsList.add(item.get());
+
+            item.get().setWalmartResponse(this.getNearbyItems(Optional.of(item.get().getText())));
         }
     }
 
