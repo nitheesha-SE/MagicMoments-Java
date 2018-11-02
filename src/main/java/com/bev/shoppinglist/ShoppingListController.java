@@ -66,6 +66,15 @@ public class ShoppingListController {
         return new ResponseEntity(Void.class, HttpStatus.OK);
     }
 
+    @GetMapping("/nearbyItems")
+    @ResponseBody
+    public ResponseEntity getNearbyItems(@RequestParam(required = false) Optional<String> query) {
+        Map body = new HashMap<String, Object>();
+        body.put("data", this.shoppingListService.getNearbyItems(query));
+
+        return new ResponseEntity(body, HttpStatus.OK);
+    }
+
     @RequestMapping(path = "/sms", method = RequestMethod.POST, produces = {MediaType.TEXT_XML_VALUE}, consumes =
             MediaType.ALL_VALUE)
     @ResponseBody
